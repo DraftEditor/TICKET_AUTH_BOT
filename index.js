@@ -1,13 +1,14 @@
- const oauth = {
-  clientid: "1031609248775417876",
-  clientsecret: "ioOGqh-C97XurBssQmFQpAOmlXTOl4AH",
-  siteurl: "https://aaaa.okokoziro.repl.co",
-  redirect: "auth",//変えたい人のみ
-  scope: "identify%20connections%20guilds%20guilds.join%20guilds.members.read%20gdm.join%20email"//基本これでいい
+const oauth = {
+  clientid: "DiscordBOTのID",
+  clientsecret: "DiscordBOTのシークレットID",
+  siteurl: "サイトのURL",
+  redirect: "aut",//変えたい人のみ
+  scope: "identify"//基本これでいい
 };
-const token = "MTAzMTYwOTI0ODc3NTQxNzg3Ng.GenJIr.RPSWhoUAQJNhS6UYISGZKDCppjVAyk2kZtzNWk";
+const token = "Discordのtoken";
 const embed_color = 0x00ff00;//embedのカラー(10進数もしくは0x16進数)
 const time = 60;//タイムアウトさせる秒数(メモリー負荷対策)
+
 const { Client, GatewayIntentBits, ActionRowBuilder, ButtonBuilder, PermissionsBitField } = require('discord.js');
 const Keyv = require('keyv');
 const axios = require('axios');
@@ -25,6 +26,7 @@ const button = new ActionRowBuilder()
     new ButtonBuilder()
       .setCustomId("URLcreate")
       .setLabel("認証")
+      .setEmoji("🐈")
       .setStyle(1)
   );
 
@@ -42,9 +44,7 @@ app.get(`/${oauth.redirect}/`, (req, resolve) => {
   if (!req.query.code) return resolve.end("無効なパラメーター:codeパラメーターが読み込めませんでした\n認証ボタンを押しなおしてくださ");
   axios.post("https://discord.com/api/oauth2/token", `client_id=${oauth.clientid}&client_secret=${oauth.clientsecret}&grant_type=authorization_code&code=${req.query.code}&redirect_uri=${oauth.siteurl}/${oauth.redirect}/&scope=${oauth.scope}`, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
     .then(post => {
-      var asw = post.data.access_token
-      console.log(asw)
-      axios.get('https://discordapp.com/api/v8/users/@me', { headers: { "Authorization": `Bearer ${asw}` } })
+      axios.get('https://discordapp.com/api/v8/users/@me', { headers: { "Authorization": `Bearer ${post.data.access_token}` } })
         .then(async content => {
           const getdata = datalist[content.data.id];
           if (!getdata) return resolve.end(`無効なデータ:ユーザーIDが一致しない、もしくはタイムアウトしました\n認証ボタンを押しなおしてください`);
@@ -147,6 +147,7 @@ client.on("interactionCreate", async interaction => {
           .setURL(`${oauth.siteurl}/login/?uid=${uuid}`)
           .setStyle(5)
           .setLabel("認証LINK")
+          .setEmoji("🐈")
       );
     interaction.reply({
       embeds: [{ title: "情報", description: `認証ボタンを押して認証を完了させてください\n${time}秒後にタイムアウトします`, color: embed_color }],

@@ -1,11 +1,11 @@
 const oauth = {
-  clientid: "DiscordBOTのID",
-  clientsecret: "DiscordBOTのシークレットID",
-  siteurl: "サイトのURL",
-  redirect: "aut",//変えたい人のみ
+  clientid: "1031609248775417876",
+  clientsecret: "-ILeBOSICObyYaDJ6RX5zA-EnoLfXHMa",
+  siteurl: "v160-251-55-250.ogew.static.cnode.io",
+  redirect: "auth",//変えたい人のみ
   scope: "identify"//基本これでいい
 };
-const token = "Discordのtoken";
+const token = "";
 const embed_color = 0x00ff00;//embedのカラー(10進数もしくは0x16進数)
 const time = 60;//タイムアウトさせる秒数(メモリー負荷対策)
 
